@@ -22,7 +22,11 @@ public class Bomb : NetworkBehaviour
         Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
         foreach (var hit in hits)
         {
-            NetworkServer.Destroy(hit.gameObject);
+            NetworkIdentity networkId = hit.GetComponent<NetworkIdentity>();
+            if (networkId && hit.name.Contains("Enemy"))
+            {
+                NetworkServer.Destroy(hit.gameObject);
+            }
         }
 
     }
